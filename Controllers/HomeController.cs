@@ -5,12 +5,11 @@ using System.Diagnostics;
 
 namespace MentiiWebsite.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
-            ViewData["UserEmail"] = User.Identity?.Name ?? "Guest";
+            
             return View();
         }
 

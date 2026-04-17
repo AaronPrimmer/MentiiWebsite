@@ -20,9 +20,23 @@ namespace MentiiWebsite.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel loginViewModel)
+        public IActionResult Login(User User)
         {
-            return View(loginViewModel);
+            if(ModelState.IsValid)
+            {
+                var userlookup = _db.MentiiUsersTbl.FirstOrDefault(u => u.UserUsername == User.UserUsername);
+                if (userlookup != null && BCrypt.Net.BCrypt.EnhancedVerify(User.UserPassword, userlookup.UserPassword))
+                {
+                    // Authentication successful, redirect to the desired page
+                    
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
+                }
+            }
+            return View(User);
         }
 
         [HttpGet]

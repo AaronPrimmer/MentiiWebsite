@@ -77,57 +77,6 @@ body {
     background-color: #0091a0;
 }
 
-/*Skills*/
-
-.skills-input-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 6px 10px;
-    min-height: 44px;
-    cursor: text;
-}
-
-#skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.skill-tag {
-    display: inline-flex;
-    align-items: center;
-    background-color: #e0f0ff;
-    color: #1a6bbf;
-    border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 0.875rem;
-    gap: 6px;
-}
-
-.remove-tag {
-    background: none;
-    border: none;
-    color: #1a6bbf;
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0;
-    line-height: 1;
-}
-
-#skill-input {
-    border: none;
-    outline: none;
-    flex: 1;
-    min-width: 180px;
-    font-size: 0.875rem;
-    padding: 3px 0;
-}
-
-
 /*Footer*/
 
 footer {
