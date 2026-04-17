@@ -9,8 +9,12 @@ namespace MentiiWebsite.Data
         {
         }
 
-        //public DbSet<Category> SupermarketCategoriesTbl { get; set; }
+        public DbSet<User> MentiiUsersTbl { get; set; }
 
-        //public DbSet<Product> SupermarketProductsTbl { get; set; }
+        public DbSet<Post> MentiiPostTbl { get; set; }
+
+        public DbSet<Skill> MentiiSkillsTbl { get; set; }
+
+        public DbSet<Comment> MentiiCommentsTbl { get; set; }
     }
 }
