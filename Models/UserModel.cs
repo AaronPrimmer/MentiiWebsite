@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MentiiWebsite.Models
 {
     [Table("mentii_users_tbl")]
-    public class User
+    public class UserModel
     {
         [Key]
         [Column("user_uuid")]

@@ -1,6 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using MentiiWebsite.Data;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using MentiiWebsite.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,32 +14,64 @@ builder.Services.AddDbContext<AppDbContext>(options => {
     options.UseMySql(connString, ServerVersion.AutoDetect(connString));
 });
 
-// ── Cookie Authentication ─────────────────────────────────────────────
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Account/Login";
-        options.LogoutPath = "/Account/Logout";
-        options.AccessDeniedPath = "/Account/AccessDenied";
-        options.SlidingExpiration = true;
-        options.ExpireTimeSpan = TimeSpan.FromHours(1);
-
-        options.Cookie.Name = ".MentiiWebsite.Auth";
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.Cookie.SameSite = SameSiteMode.Lax;
-    });
-
-builder.Services.AddAuthorization();
-
-// ── Anti-forgery (CSRF) ───────────────────────────────────────────────
-builder.Services.AddAntiforgery(options =>
+// Add Identity
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.HttpOnly = true;
+    // Password policy
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireUppercase = true;
+
+    // Lockout settings
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+
+    // User settings
+    options.User.RequireUniqueEmail = true;
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+
+// Cookie configuration
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
 });
+//// ── Cookie Authentication ─────────────────────────────────────────────
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie(options =>
+//    {
+//        options.LoginPath = "/Account/Login";
+//        options.LogoutPath = "/Account/Logout";
+//        options.AccessDeniedPath = "/Account/AccessDenied";
+//        options.SlidingExpiration = true;
+//        options.ExpireTimeSpan = TimeSpan.FromHours(1);
+
+//        options.Cookie.Name = ".MentiiWebsite.Auth";
+//        options.Cookie.HttpOnly = true;
+//        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+//        options.Cookie.SameSite = SameSiteMode.Lax;
+//    });
+
+//builder.Services.AddAuthorization();
+
+//// ── Anti-forgery (CSRF) ───────────────────────────────────────────────
+//builder.Services.AddAntiforgery(options =>
+//{
+//    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+//    options.Cookie.HttpOnly = true;
+//});
 
 var app = builder.Build();
+
+// In Program.cs, after app.Build(): TODO DELETE AS NEEDED
+//using (var scope = app.Services.CreateScope())
+//{
+//    await RoleSeeder.SeedAsync(scope.ServiceProvider);
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

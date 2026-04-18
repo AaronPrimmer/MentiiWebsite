@@ -7,9 +7,15 @@ namespace MentiiWebsite.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
-            
+            return View(nameof(Dashboard));
+        }
+
+        [Authorize]
+        public IActionResult Dashboard()
+        {
             return View();
         }
 

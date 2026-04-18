@@ -1,0 +1,51 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Register</h2>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" asp-action="Register">
+    @Html.AntiForgeryToken()
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="Email"></label>
+        </div>
+        <div class="col-5">
+            <input asp-for="Email" type="email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="Password"></label>
+        </div>
+        <div class="col-5">
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="ConfirmPassword"></label>
+        </div>
+        <div class="col-5">
+            <input asp-for="ConfirmPassword" type="password" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+    <p>Already have an account? <a asp-action="Login">Login here</a></p>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
