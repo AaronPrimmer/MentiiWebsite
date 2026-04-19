@@ -1,0 +1,20 @@
+﻿@model UserModel
+
+@if(Model == null)
+{
+    ViewData["Title"] = "User not found";
+}
+else
+{
+    ViewData["Title"] = Model.UserUsername + "'s Profile";
+}
+
+@if (Model == null)
+{
+    <h2>User not found</h2>
+    <p>The user you are looking for does not exist.</p>
+}
+else
+{
+    <h3>@Model.UserUsername 's Profile</h3>
+}

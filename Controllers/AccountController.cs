@@ -1,5 +1,4 @@
-﻿using BCrypt.Net;
-using MentiiWebsite.Data;
+﻿using MentiiWebsite.Data;
 using MentiiWebsite.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,18 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace MentiiWebsite.Controllers
 {    public class AccountController : Controller
     {
-        //private readonly AppDbContext _db;
-
-        //public AccountController(AppDbContext db)
-        //{
-        //    _db = db;
-        //}
-
+        private readonly AppDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(AppDbContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
+            _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -36,10 +30,33 @@ namespace MentiiWebsite.Controllers
                 return View(model);
             }
 
-            var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+            // ✅ Check if username is already taken
+            var existingUser = await _userManager.FindByNameAsync(model.Username);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Username", "This username is already taken.");
+                return View(model);
+            }
+
+            var user = new IdentityUser { UserName = model.Username, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
+                var newUser = await _db.MentiiUsersTbl.AddAsync(new UserModel
+                    {
+                        UserUuid = Guid.Parse(user.Id),
+                        UserFirstname = "",
+                        UserLastname = "",
+                        UserUsername = model.Username,
+                        UserEmail = model.Email,
+                        UserTitle = "",
+                        UserBirthday = model.Birthday,
+                        UserEnabled = true,
+                        UserDateCreated = DateTime.UtcNow
+                });
+
+                await _db.SaveChangesAsync();
+
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
             }
@@ -49,6 +66,7 @@ namespace MentiiWebsite.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
+            
             return View(model);
         }
 
