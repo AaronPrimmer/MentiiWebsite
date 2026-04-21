@@ -77,7 +77,8 @@ namespace MentiiWebsite.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -85,14 +86,14 @@ namespace MentiiWebsite.Controllers
                 return View(User);
             }
 
-            var result = _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
+            var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
 
-            if (result.IsCompletedSuccessfully)
+            if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            if (result.IsFaulted || result.IsCanceled)
+            if (result.IsNotAllowed || result.IsLockedOut)
             {
                 ModelState.AddModelError(string.Empty, "An error occurred while trying to log in. Please try again.");
                 return View(model);
