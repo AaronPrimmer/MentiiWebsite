@@ -1,5 +1,42 @@
 ﻿@{
     ViewData["Title"] = "Welcome";
 }
+<div class="dashboard-main">
+    <div class="dashboard-posts">
+        <h3>User Posts</h3>
+        <a class="btn_mentii" data-bs-toggle="modal" data-bs-target="#addPostModal">Post</a>
+    </div>
+    <div class="dashboard-user-info">
+        <div class="dashboard-user-column">
+            <div class="user-following">
+                <h3>Following</h3>
+            </div>
+            <div class="user-followers">
+                <h3>Followers</h3>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h3>Dashboard</h3>
+<div class="modal fade" id="addPostModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header"><h5>Add Post</h5></div>
+            <div class="modal-body">
+                <form id="addPostForm">
+                    @Html.AntiForgeryToken()
+                    <input type="text" name="Title" class="form-control" placeholder="Title" required maxlength="60"/>
+                    <br />
+                    <textarea name="Content" class="form-control" placeholder="Content" required maxlength="255"></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="postBtnSave" class="btn_mentii">Save Post</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/dashboardModal.js"></script>
+}

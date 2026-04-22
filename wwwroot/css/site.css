@@ -18,7 +18,8 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    padding-top: 20px;
+    margin-bottom: 60px;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -52,7 +53,7 @@ body {
     gap: 20px;
 }
 
-.header-nav a {
+/*.header-nav a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
@@ -60,6 +61,14 @@ body {
 
 .header-nav a:hover {
     color: #00a9c1;
+}*/
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .header-create-button {
@@ -77,8 +86,82 @@ body {
     background-color: #0091a0;
 }
 
-/*Footer*/
+.user-greeting {
+    color: #324b4e;
+    font-weight: bold;
+}
 
+/*Body*/
+
+
+.btn_mentii {
+    color: #ffffff;
+    background-color: #8ec4ca;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.btn_mentii:hover {
+    background-color: #94b0b3;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.btn_mentii:active {
+    background-color: #324b4e;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.mentii-link {
+    text-decoration: none;
+    color: #8ec4ca;
+    font-weight: bold;
+}
+
+.mentii-link:hover {
+    color: #324b4e;
+}
+
+/*Dashboard*/
+
+.dashboard-main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.dashboard-posts {
+    flex: 3;
+}
+
+.dashboard-user-info {
+    flex: 1;
+}
+
+.dashboard-user-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.user-following {
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/*Footer*/
 footer {
     background-color: #cfe8e0;
     padding: 20px;

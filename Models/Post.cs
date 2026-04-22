@@ -17,12 +17,12 @@ namespace MentiiWebsite.Models
 
         [Required]
         [Column("post_title")]
-        [StringLength(100, ErrorMessage = "The title cannot exceed 100 characters.")]
+        [StringLength(60, ErrorMessage = "The title cannot exceed 60 characters.")]
         public string PostTitle { get; set; } = string.Empty;
 
         [Required]
         [Column("post_body")]
-        [StringLength(1000, ErrorMessage = "The body cannot exceed 1000 characters.")]
+        [StringLength(255, ErrorMessage = "The body cannot exceed 255 characters.")]
         public string PostBody { get; set; } = string.Empty;
 
         [Column("post_date")]

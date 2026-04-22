@@ -1,5 +1,7 @@
+using MentiiWebsite.Data;
 using MentiiWebsite.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,6 +9,17 @@ namespace MentiiWebsite.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly AppDbContext _db;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+
+        public HomeController(AppDbContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        {
+            _db = db;
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
         [Authorize]
         public IActionResult Index()
         {
@@ -14,6 +27,7 @@ namespace MentiiWebsite.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public IActionResult Dashboard()
         {
             return View();

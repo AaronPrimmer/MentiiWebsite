@@ -33,7 +33,7 @@
             <label asp-for="Birthday"></label>
         </div>
         <div class="col-5">
-            <input asp-for="Birthday" type="date" class="form-control" />
+            <input asp-for="Birthday" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")"/>
             <span asp-validation-for="Birthday" class="text-danger"></span>
         </div>
     </div>
@@ -58,9 +58,10 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Register</button>
-    <p>Already have an account? <a asp-action="Login">Login here</a></p>
+    <button type="submit" class="btn_mentii">Register</button>
 </form>
+
+<p>Already have an account? <a asp-action="Login" class="mentii-link">Login here</a></p>
 
 @section Scripts {
     @{
