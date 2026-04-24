@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MentiiWebsite.Models
@@ -27,5 +28,7 @@ namespace MentiiWebsite.Models
 
         [Column("post_date")]
         public DateTime PostDate { get; set; }
+
+        public UserModel? Author { get; set; }
     }
 }

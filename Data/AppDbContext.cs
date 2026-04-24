@@ -22,6 +22,15 @@ namespace MentiiWebsite.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Post>(entity =>
+            {
+                entity.HasOne(p => p.Author)
+                      .WithMany()
+                      .HasForeignKey(p => p.UserUuid)
+                      .HasPrincipalKey(u => u.UserUuid)  // Explicitly specify the principal key
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

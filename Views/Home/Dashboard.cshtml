@@ -1,11 +1,20 @@
-﻿@{
-    ViewData["Title"] = "Welcome";
+﻿@model List<Post>
+
+@{
+    ViewData["Title"] = $"{User.Identity?.Name} Dashboard";
 }
 <div class="dashboard-main">
     <div class="dashboard-posts">
         <h3>User Posts</h3>
-        <a class="btn_mentii" data-bs-toggle="modal" data-bs-target="#addPostModal">Post</a>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a class="btn_mentii" data-bs-toggle="modal" data-bs-target="#addPostModal">Post</a>
+        }
+        
     </div>
+
+    @await Html.PartialAsync("_PostList", Model)
+
     <div class="dashboard-user-info">
         <div class="dashboard-user-column">
             <div class="user-following">

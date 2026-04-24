@@ -44,8 +44,6 @@ namespace MentiiWebsite.Controllers
                     PostDate = DateTime.UtcNow
                 });
 
-                Console.WriteLine($"User {user.UserName}:{user.Id} is creating a post with title: {post.Title}");
-
                 await _db.SaveChangesAsync();
                 return Json(new { success = true, postId = userPost.Entity.PostUuid });
             }

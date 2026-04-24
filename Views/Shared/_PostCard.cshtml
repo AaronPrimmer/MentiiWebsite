@@ -1,0 +1,12 @@
+﻿@model Post
+
+<div class="post-card">
+    <div class="post-header">
+        <span class="post-author">@Model.Author?.UserUsername</span>
+        <span class="post-date">@Model.PostDate.ToString("MMM dd, yyyy")</span>
+    </div>
+    <div class="post-body">
+        <h2 class="post-title">@Model.PostTitle</h2>
+        <p class="post-body">@Model.PostBody</p>
+    </div>
+</div>

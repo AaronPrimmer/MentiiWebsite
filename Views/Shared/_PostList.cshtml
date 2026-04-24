@@ -1,0 +1,17 @@
+﻿@model List<Post>
+
+@if(Model == null || !Model.Any())
+{
+    <div class="no-posts">
+        <p>No Posts yet. Be the first to post!</p>
+    </div>
+}
+else
+{
+    <div class="post-list">
+        @foreach(var post in Model)
+        {
+            @await Html.PartialAsync("_PostCard", post)
+        }
+    </div>
+}

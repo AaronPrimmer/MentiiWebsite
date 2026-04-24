@@ -3,6 +3,7 @@ using MentiiWebsite.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace MentiiWebsite.Controllers
@@ -23,14 +24,22 @@ namespace MentiiWebsite.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            return View(nameof(Dashboard));
+            return RedirectToAction("Dashboard");
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
-            return View();
+            var posts = await _db.MentiiPostTbl
+                .Include(p => p.Author)
+                .OrderByDescending(p => p.PostDate)
+                .Take(20)
+                .ToListAsync();
+
+            Console.WriteLine($"Retrieved {posts.Count} posts.");
+
+            return View(posts);
         }
 
         public IActionResult Privacy()
