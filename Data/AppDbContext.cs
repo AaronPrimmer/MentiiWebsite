@@ -19,10 +19,13 @@ namespace MentiiWebsite.Data
 
         public DbSet<Comment> MentiiCommentsTbl { get; set; }
 
+        public DbSet<PostLike> MentiiPostLikeTbl { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            // Post to UserModel relationship
             builder.Entity<Post>(entity =>
             {
                 entity.HasOne(p => p.Author)
@@ -30,6 +33,25 @@ namespace MentiiWebsite.Data
                       .HasForeignKey(p => p.UserUuid)
                       .HasPrincipalKey(u => u.UserUuid)  // Explicitly specify the principal key
                       .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<PostLike>(entity =>
+            {
+                entity.ToTable("mentii_post_likes_tbl");
+
+                // FK to Post
+                entity.HasOne(l => l.Post)
+                      .WithMany(p => p.Likes)
+                      .HasForeignKey(l => l.PostId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(l => l.User)
+                      .WithMany()
+                      .HasForeignKey(l => l.UserUuid)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                // Make sure the user can't like the same post twice
+                entity.HasIndex(l => new { l.PostId, l.UserUuid }).IsUnique();
             });
         }
     }

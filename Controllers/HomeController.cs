@@ -1,5 +1,6 @@
 using MentiiWebsite.Data;
 using MentiiWebsite.Models;
+using MentiiWebsite.Models.ModelViews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,8 +34,20 @@ namespace MentiiWebsite.Controllers
         {
             var posts = await _db.MentiiPostTbl
                 .Include(p => p.Author)
+                .Include(p => p.Likes)
                 .OrderByDescending(p => p.PostDate)
                 .Take(20)
+                .Select(p => new PostToViewModel
+                {
+                    PostId = p.PostUuid,
+                    UserUuid = p.UserUuid,
+                    PostTitle = p.PostTitle,
+                    PostBody = p.PostBody,
+                    PostDate = p.PostDate,
+                    Username = p.Author != null ? p.Author.UserUsername : "Unknown",
+                    LikeCount = p.Likes != null ? p.Likes.Count : 0,
+                    UserHasLiked = p.Likes != null ? p.Likes.Any(l => l.UserUuid == _userManager.GetUserId(User)) : false
+                })
                 .ToListAsync();
 
             Console.WriteLine($"Retrieved {posts.Count} posts.");

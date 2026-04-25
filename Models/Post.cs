@@ -30,5 +30,7 @@ namespace MentiiWebsite.Models
         public DateTime PostDate { get; set; }
 
         public UserModel? Author { get; set; }
+
+        public ICollection<PostLike>? Likes { get; set; }
     }
 }

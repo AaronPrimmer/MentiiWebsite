@@ -4,6 +4,7 @@ using MentiiWebsite.Models.ModelViews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace MentiiWebsite.Controllers
@@ -49,6 +50,37 @@ namespace MentiiWebsite.Controllers
             }
 
             return Json(new { success = false, postId = 0 });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<JsonResult> Like(Guid postId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var existingLike = await _db.MentiiPostLikeTbl.FirstOrDefaultAsync(p => p.PostId == postId && p.UserUuid == user.Id);
+                if (existingLike == null)
+                {
+                    await _db.MentiiPostLikeTbl.AddAsync(new PostLike
+                    {
+                        LikeId = Guid.NewGuid(),
+                        PostId = postId,
+                        UserUuid = user.Id
+                    });
+                    await _db.SaveChangesAsync();
+                    int likeCount = await _db.MentiiPostLikeTbl.CountAsync(p => p.PostId == postId);
+                    return Json(new { success = true, liked = true, likeCount });
+                }
+                else
+                {
+                    _db.MentiiPostLikeTbl.Remove(existingLike);
+                    await _db.SaveChangesAsync();
+                    int likeCount = await _db.MentiiPostLikeTbl.CountAsync(p => p.PostId == postId);
+                    return Json(new { success = true, liked = false, likeCount });
+                }
+            }
+            return Json(new { success = false, liked = false });
         }
     }
 }

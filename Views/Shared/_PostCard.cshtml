@@ -1,12 +1,18 @@
-﻿@model Post
+﻿@model PostToViewModel
 
 <div class="post-card">
     <div class="post-header">
-        <span class="post-author">@Model.Author?.UserUsername</span>
+        <span class="post-author">@Model.Username</span>
         <span class="post-date">@Model.PostDate.ToString("MMM dd, yyyy")</span>
     </div>
     <div class="post-body">
         <h2 class="post-title">@Model.PostTitle</h2>
-        <p class="post-body">@Model.PostBody</p>
+        <p class="post-content-body">@Model.PostBody</p>
+    </div>
+    <div class="post-actions">
+        <div class="like-button @(Model.UserHasLiked ? "liked" : "")" data-post-id="@Model.PostId">
+            <span class="emoji-button"></span><span class="like-count">@Model.LikeCount</span>
+        </div>
+        
     </div>
 </div>
