@@ -21,9 +21,15 @@
         <div>
             <nav class="header-nav">
                 <div class="nav-links">
-                    @if(User.Identity.IsAuthenticated)
+                    @if(User?.Identity?.IsAuthenticated ?? false)
                     {
                         <span class="user-greeting">Hello, @User.Identity.Name!</span>
+                        <form method="get" asp-controller="User" asp-action="Profile">
+                            <button class="profile-button" type="submit" title="@User.Identity.Name!'s Profile">
+                                <i class="icon-regular fa-regular fa-user"></i>
+                                <i class="icon-solid fa-solid fa-user"></i>
+                            </button>
+                        </form>
                         <form method="post" asp-controller="Account" asp-action="Logout">
                             @Html.AntiForgeryToken()
                             <button class="btn_mentii" type="submit">Logout</button>
@@ -51,6 +57,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/c42a8c8e8b.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

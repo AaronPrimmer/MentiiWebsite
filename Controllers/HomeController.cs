@@ -32,8 +32,11 @@ namespace MentiiWebsite.Controllers
         [HttpGet]
         public async Task<IActionResult> Dashboard()
         {
+            var currentUserId = _userManager.GetUserId(User);
+
             var posts = await _db.MentiiPostTbl
                 .Include(p => p.Author)
+                .ThenInclude(u => u.Skills)
                 .Include(p => p.Likes)
                 .OrderByDescending(p => p.PostDate)
                 .Take(20)
@@ -44,13 +47,16 @@ namespace MentiiWebsite.Controllers
                     PostTitle = p.PostTitle,
                     PostBody = p.PostBody,
                     PostDate = p.PostDate,
+                    UserTitle = p.Author != null ? p.Author.UserTitle : "",
+                    UserSkills = p.Author != null ? p.Author.Skills.Select(s => s.SkillName).ToList() : new List<string>(),
                     Username = p.Author != null ? p.Author.UserUsername : "Unknown",
                     LikeCount = p.Likes != null ? p.Likes.Count : 0,
-                    UserHasLiked = p.Likes != null ? p.Likes.Any(l => l.UserUuid == _userManager.GetUserId(User)) : false
+                    UserHasLiked = p.Likes != null && currentUserId != null ? p.Likes.Any(l => l.UserUuid == currentUserId) : false
                 })
                 .ToListAsync();
 
             Console.WriteLine($"Retrieved {posts.Count} posts.");
+            Console.WriteLine($"UserTitle: {string.Join(", ", posts.Select(p => p.UserTitle))}");
 
             return View(posts);
         }

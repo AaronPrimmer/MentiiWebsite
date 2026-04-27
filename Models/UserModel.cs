@@ -45,5 +45,7 @@ namespace MentiiWebsite.Models
         [Column("user_date_created")]
         [DataType(DataType.Date)]
         public DateTime UserDateCreated { get; set; } = DateTime.UtcNow;
+
+        public ICollection<Skill> Skills { get; set; } = new List<Skill>();
     }
 }

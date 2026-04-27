@@ -14,6 +14,10 @@
 
         public string Username { get; set; } = string.Empty;
 
+        public string UserTitle { get; set; } = string.Empty;
+
+        public List<string> UserSkills { get; set; } = new List<string>();
+
         public int LikeCount { get; set; }
     
         public bool UserHasLiked { get; set; }

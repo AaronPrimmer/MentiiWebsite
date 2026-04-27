@@ -129,8 +129,23 @@ body {
     color: #324b4e;
 }
 
-/*Dashboard*/
+.profile-button {
+    border: none;
+    background-color: transparent;
+    display: inline-block;
+    padding: 5px 10px;
+}
 
+.profile-button:hover .icon-regular, .profile-button .icon-solid{
+    display: none;
+}
+
+.profile-button:hover .icon-solid {
+    display: inline-block;
+}
+
+
+/*Dashboard*/
 .dashboard-main {
     padding-top: 20px;
     display: flex;

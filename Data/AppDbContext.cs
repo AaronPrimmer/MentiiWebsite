@@ -5,12 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MentiiWebsite.Data
 {
-    public class AppDbContext : IdentityDbContext<IdentityUser>
+    public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<IdentityUser>(options)
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<UserModel> MentiiUsersTbl { get; set; }
 
         public DbSet<Post> MentiiPostTbl { get; set; }
@@ -52,6 +48,15 @@ namespace MentiiWebsite.Data
 
                 // Make sure the user can't like the same post twice
                 entity.HasIndex(l => new { l.PostId, l.UserUuid }).IsUnique();
+            });
+
+            builder.Entity<UserModel>(entity =>
+            {
+                entity.HasMany(u => u.Skills)
+                      .WithOne()
+                      .HasForeignKey(s => s.UserUuid)
+                      .HasPrincipalKey(u => u.UserUuid)  // Explicitly specify the principal key
+                      .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }
