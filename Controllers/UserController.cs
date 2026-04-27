@@ -1,28 +1,47 @@
 ﻿using MentiiWebsite.Data;
 using MentiiWebsite.Models;
+using MentiiWebsite.Models.ModelViews;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MentiiWebsite.Controllers
 {
-    public class UserController : Controller
+    public class UserController(AppDbContext db) : Controller
     {
-        private readonly AppDbContext _db;
-
-        public UserController(AppDbContext db)
-        {
-            _db = db;
-        }
-
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
-        public IActionResult Profile(Guid userUuid)
+        public IActionResult Profile(string username)
         {
-            var userInfo = _db.MentiiUsersTbl.FirstOrDefault(u => u.UserUuid == userUuid);
-            return View();
+            if (username == null) 
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userInfo = db.MentiiUsersTbl
+                .Include(s => s.Skills)
+                .FirstOrDefault(u => u.UserUsername == username);
+            if(userInfo == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new UserProfileViewModel
+            {
+                UserId = userInfo.UserUuid.ToString(),
+                UserName = userInfo.UserUsername,
+                UserFirstName = userInfo.UserFirstname,
+                UserLastName = userInfo.UserLastname,
+                UserEmail = userInfo.UserEmail,
+                UserTitle = userInfo.UserTitle,
+                UserSkills = [.. userInfo.Skills.Select(s => s.SkillName)],
+                UserBirthday = userInfo.UserBirthday
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]

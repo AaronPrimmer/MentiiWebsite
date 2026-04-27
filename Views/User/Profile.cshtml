@@ -1,4 +1,4 @@
-﻿@model UserModel
+﻿@model UserProfileViewModel
 
 @if(Model == null)
 {
@@ -6,7 +6,7 @@
 }
 else
 {
-    ViewData["Title"] = Model.UserUsername + "'s Profile";
+    ViewData["Title"] = Model.UserName + "'s Profile";
 }
 
 @if (Model == null)
@@ -16,5 +16,80 @@ else
 }
 else
 {
-    <h3>@Model.UserUsername 's Profile</h3>
+    <h3>@Model.UserName 's Profile</h3>
+
+    <div class="profile-container">
+        <form method="post" asp-controller="User" asp-action="Profile">
+            @Html.AntiForgeryToken()
+            <div class="profile-form">
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label asp-for="UserName"></label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="UserName" type="email" class="form-control" disabled />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label asp-for="UserEmail"></label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="UserEmail" type="email" class="form-control" disabled />
+                        <span asp-validation-for="UserEmail" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label asp-for="UserFirstName"></label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="UserFirstName" type="text" class="form-control" />
+                        <span asp-validation-for="UserFirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label asp-for="UserLastName"></label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="UserLastName" type="text" class="form-control" />
+                        <span asp-validation-for="UserLastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label asp-for="UserTitle"></label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="UserTitle" type="text" class="form-control" />
+                        <span asp-validation-for="UserTitle" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label asp-for="UserSkills"></label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="UserSkills" type="text" class="form-control" />
+                        <span asp-validation-for="UserSkills" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label asp-for="UserBirthday"></label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="UserBirthday" type="date" class="form-control" />
+                        <span asp-validation-for="UserBirthday" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-form-save-button">
+                <button type="submit" class="btn_mentii">Save Changes</button>
+            </div>
+        </form>
+    </div>
 }

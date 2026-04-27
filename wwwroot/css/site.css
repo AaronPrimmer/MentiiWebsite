@@ -92,6 +92,9 @@ body {
 
 /*Body*/
 
+.container {
+    padding: 20px;
+}
 
 .btn_mentii {
     color: #ffffff;
@@ -268,6 +271,11 @@ body {
     justify-content: flex-start;
     align-items: center;
 }
+
+/*Profile*/
+
+
+
 
 /*Footer*/
 footer {

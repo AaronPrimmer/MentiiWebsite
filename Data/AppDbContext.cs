@@ -58,6 +58,17 @@ namespace MentiiWebsite.Data
                       .HasPrincipalKey(u => u.UserUuid)  // Explicitly specify the principal key
                       .OnDelete(DeleteBehavior.Cascade);
             });
+
+            builder.Entity<Skill>(entity =>
+            {
+                entity.ToTable("mentii_skills_tbl");
+
+                entity.HasOne<UserModel>()
+                      .WithMany(u => u.Skills)
+                      .HasForeignKey(s => s.UserUuid)
+                      .HasPrincipalKey(u => u.UserUuid)  // Explicitly specify the principal key
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }

@@ -25,7 +25,8 @@
                     {
                         <span class="user-greeting">Hello, @User.Identity.Name!</span>
                         <form method="get" asp-controller="User" asp-action="Profile">
-                            <button class="profile-button" type="submit" title="@User.Identity.Name!'s Profile">
+                            <input type="hidden" name="username" value="@User.Identity.Name" />
+                            <button class="profile-button" type="submit" title="@User.Identity.Name's Profile">
                                 <i class="icon-regular fa-regular fa-user"></i>
                                 <i class="icon-solid fa-solid fa-user"></i>
                             </button>
