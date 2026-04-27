@@ -72,7 +72,7 @@ else
                         <label asp-for="UserSkills"></label>
                     </div>
                     <div class="col-5">
-                        <input asp-for="UserSkills" type="text" class="form-control" />
+                        <input asp-for="UserSkills" type="text" class="form-control" value="@string.Join(", ", Model.UserSkills)" />
                         <span asp-validation-for="UserSkills" class="text-danger"></span>
                     </div>
                 </div>
@@ -81,7 +81,7 @@ else
                         <label asp-for="UserBirthday"></label>
                     </div>
                     <div class="col-5">
-                        <input asp-for="UserBirthday" type="date" class="form-control" />
+                        <input asp-for="UserBirthday" type="date" class="form-control" disabled value="@Model.UserBirthday.ToString("yyyy-MM-dd")" />
                         <span asp-validation-for="UserBirthday" class="text-danger"></span>
                     </div>
                 </div>

@@ -9,18 +9,11 @@ using System.Security.Claims;
 
 namespace MentiiWebsite.Controllers
 {
-    public class PostController : Controller
+    public class PostController(AppDbContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : Controller
     {
-        private readonly AppDbContext _db;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public PostController(AppDbContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
-        {
-            _db = db;
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private readonly AppDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
+        private readonly UserManager<IdentityUser> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+        private readonly SignInManager<IdentityUser> _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
 
         [Authorize]
         public IActionResult Create()

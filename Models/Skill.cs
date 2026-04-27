@@ -8,12 +8,13 @@ namespace MentiiWebsite.Models
     {
         [Key]
         [Column("skill_id")]
-        public Guid SkillId { get; set; }
+        public Guid SkillId { get; set; } = Guid.NewGuid();
 
         [Column("user_uuid")]
         public Guid UserUuid { get; set; }
 
         [Column("skill_name")]
         public string SkillName { get; set; } = string.Empty;
+
     }
 }

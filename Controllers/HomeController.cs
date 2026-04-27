@@ -9,18 +9,11 @@ using System.Diagnostics;
 
 namespace MentiiWebsite.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(AppDbContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : Controller
     {
-        private readonly AppDbContext _db;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public HomeController(AppDbContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
-        {
-            _db = db;
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private readonly AppDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
+        private readonly UserManager<IdentityUser> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+        private readonly SignInManager<IdentityUser> _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
 
         [Authorize]
         public IActionResult Index()
@@ -51,12 +44,11 @@ namespace MentiiWebsite.Controllers
                     UserSkills = p.Author != null ? p.Author.Skills.Select(s => s.SkillName).ToList() : new List<string>(),
                     Username = p.Author != null ? p.Author.UserUsername : "Unknown",
                     LikeCount = p.Likes != null ? p.Likes.Count : 0,
-                    UserHasLiked = p.Likes != null && currentUserId != null ? p.Likes.Any(l => l.UserUuid == currentUserId) : false
+                    UserHasLiked = p.Likes != null && currentUserId != null && p.Likes.Any(l => l.UserUuid == currentUserId)
                 })
                 .ToListAsync();
 
             Console.WriteLine($"Retrieved {posts.Count} posts.");
-            Console.WriteLine($"UserTitle: {string.Join(", ", posts.Select(p => p.UserTitle))}");
 
             return View(posts);
         }
