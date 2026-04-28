@@ -4,7 +4,10 @@
     <div class="post-header">
         <div class="post-header-author">
             <span class="post-author">@Model.Username</span>
-            <span class="post-author-title">@Model.UserTitle</span>
+            @if(!string.IsNullOrEmpty(Model.UserTitle))
+            {
+                <span class="post-author-title">@Model.UserTitle</span>
+            }
         </div>
         <div class="post-header-date">
             <span class="post-date">@Model.PostDate.ToString("MMM dd, yyyy")</span>

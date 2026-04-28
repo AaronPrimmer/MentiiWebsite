@@ -1,4 +1,8 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$("#profileForm").submit(function (event) {
+    event.preventDefault(); // Prevent default form submission
 
-// Write your JavaScript code.
+    const userName = $("#usernameField").val().trim();
+    if (userName) {
+        window.location.href = `/User/Profile/${encodeURIComponent(userName)}`;
+    }
+});

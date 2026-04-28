@@ -47,33 +47,43 @@ namespace MentiiWebsite.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<JsonResult> Like(Guid postId)
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> Like([FromBody] LikeRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user != null)
+            //Console.WriteLine($"Received like request for postId: {request?.PostId}");
+
+            if(request != null)
             {
-                var existingLike = await _db.MentiiPostLikeTbl.FirstOrDefaultAsync(p => p.PostId == postId && p.UserUuid == user.Id);
-                if (existingLike == null)
+                Guid postId = Guid.Parse(request.PostId);
+                var user = await _userManager.GetUserAsync(User);
+                if (user != null && postId != Guid.Empty)
                 {
-                    await _db.MentiiPostLikeTbl.AddAsync(new PostLike
+                
+
+                    var existingLike = await _db.MentiiPostLikeTbl.FirstOrDefaultAsync(p => p.PostId == postId && p.UserUuid == user.Id);
+                    if (existingLike == null)
                     {
-                        LikeId = Guid.NewGuid(),
-                        PostId = postId,
-                        UserUuid = user.Id
-                    });
-                    await _db.SaveChangesAsync();
-                    int likeCount = await _db.MentiiPostLikeTbl.CountAsync(p => p.PostId == postId);
-                    return Json(new { success = true, liked = true, likeCount });
+                        await _db.MentiiPostLikeTbl.AddAsync(new PostLike
+                        {
+                            LikeId = Guid.NewGuid(),
+                            PostId = postId,
+                            UserUuid = user.Id
+                        });
+                        await _db.SaveChangesAsync();
+                        int likeCount = await _db.MentiiPostLikeTbl.CountAsync(p => p.PostId == postId);
+                        return Json(new { success = true, liked = true, likeCount });
+                    }
+                    else
+                    {
+                        _db.MentiiPostLikeTbl.Remove(existingLike);
+                        await _db.SaveChangesAsync();
+                        int likeCount = await _db.MentiiPostLikeTbl.CountAsync(p => p.PostId == postId);
+                        return Json(new { success = true, liked = false, likeCount });
+                    }
                 }
-                else
-                {
-                    _db.MentiiPostLikeTbl.Remove(existingLike);
-                    await _db.SaveChangesAsync();
-                    int likeCount = await _db.MentiiPostLikeTbl.CountAsync(p => p.PostId == postId);
-                    return Json(new { success = true, liked = false, likeCount });
-                }
+                return Json(new { success = false, liked = false, postId });
             }
-            return Json(new { success = false, liked = false });
+            return Json(new { success = false, liked = false, postId = 0 });
         }
     }
 }

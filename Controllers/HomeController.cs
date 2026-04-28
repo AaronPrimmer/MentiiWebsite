@@ -48,7 +48,7 @@ namespace MentiiWebsite.Controllers
                 })
                 .ToListAsync();
 
-            Console.WriteLine($"Retrieved {posts.Count} posts.");
+            //Console.WriteLine($"Retrieved {posts.Count} posts.");
 
             return View(posts);
         }

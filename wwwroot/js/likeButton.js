@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
     $('.like-button').click(async function () {
         var button = $(this);
-        var id = button.data('post-id');
-        console.log('Like button clicked for post ID:', id);
+        var id = this.dataset.postId;
+        //console.log('Like button clicked for post ID:', JSON.stringify({ postId: id }));
 
         // Optional: Toggle visual state immediately
         button.toggleClass('liked');
@@ -16,7 +16,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val(),
                 },
                 body: JSON.stringify({ postId: id })
             });
@@ -25,9 +25,13 @@
 
             const data = await response.json();
 
-            console.log('Like response:', JSON.stringify(data));
+            if (data.success == false) {
+                button.toggleClass('liked'); // Revert visual state if like failed
+            } else {
+                button.find('.like-count').text(data.likeCount);
+            }
 
-            button.find('.like-count').text(data.likeCount);
+            //console.log('Like response:', JSON.stringify(data));
         } catch (error) {
             console.error('Error liking the post:', error);
             button.toggleClass('liked');

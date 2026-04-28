@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Mentii</title>
     <script type="importmap"></script>
+    <link rel="icon" type="image/png" href="~/mentii-favicon.png" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MentiiWebsite.styles.css" asp-append-version="true" />
@@ -24,8 +25,8 @@
                     @if(User?.Identity?.IsAuthenticated ?? false)
                     {
                         <span class="user-greeting">Hello, @User.Identity.Name!</span>
-                        <form method="get" asp-controller="User" asp-action="Profile">
-                            <input type="hidden" name="username" value="@User.Identity.Name" />
+                        <form id="profileForm" method="get" asp-controller="User" asp-action="Profile">
+                            <input id="usernameField" type="hidden" name="username" value="@User.Identity.Name" />
                             <button class="profile-button" type="submit" title="@User.Identity.Name's Profile">
                                 <i class="icon-regular fa-regular fa-user"></i>
                                 <i class="icon-solid fa-solid fa-user"></i>
