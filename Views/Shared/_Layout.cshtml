@@ -34,12 +34,12 @@
                         </form>
                         <form method="post" asp-controller="Account" asp-action="Logout">
                             @Html.AntiForgeryToken()
-                            <button class="btn_mentii" type="submit">Logout</button>
+                            <button class="btn btn_mentii" type="submit">Logout</button>
                         </form>
                     }
                     else
                     {
-                        <a class="btn_mentii" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="btn btn_mentii" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                     }
                 </div>
             </nav>

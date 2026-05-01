@@ -9,12 +9,11 @@ using System.Data.Common;
 
 namespace MentiiWebsite.Controllers
 {
-    public class UserController(AppDbContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : Controller
+    public class UserController(AppDbContext db, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : Controller
     {
         private readonly AppDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
-        private readonly UserManager<IdentityUser> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        private readonly SignInManager<IdentityUser> _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-
+        private readonly UserManager<ApplicationUser> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+        private readonly SignInManager<ApplicationUser> _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         public IActionResult Index()
         {
             return RedirectToAction("Index", "Home");

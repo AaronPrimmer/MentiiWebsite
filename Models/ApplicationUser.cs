@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class ApplicationUser : IdentityUser
+namespace MentiiWebsite.Models
 {
-    public required string FirstName { get; set; }
-    public required string LastName { get; set; }
+    public class ApplicationUser : IdentityUser
+    {
+        [NotMapped]
+        public IList<string>? RoleNames { get; set; } = null;
+    }
 }
-
-

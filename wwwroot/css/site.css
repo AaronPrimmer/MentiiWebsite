@@ -99,27 +99,16 @@ body {
 .btn_mentii {
     color: #ffffff;
     background-color: #8ec4ca;
-    border-radius: 5px;
-    border: none;
-    padding: 10px 20px;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 .btn_mentii:hover {
     background-color: #94b0b3;
     color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    text-decoration: none;
 }
 
 .btn_mentii:active {
     background-color: #324b4e;
     color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    text-decoration: none;
 }
 
 .mentii-link {
@@ -260,7 +249,7 @@ body {
 
 .post-author-title {
     margin-left: 20px;
-    background-color: #005c7a;
+    background-color: #57bf80;
     padding: 3px 5px;
     border: none;
     border-radius: 5px;
@@ -280,7 +269,7 @@ body {
 
 .skill-tag {
     color: #e6f4f1;
-    background-color: #338470;
+    background-color: #00a9c1;
     padding: 3px 5px;
     border-radius: 5px;
     border: none;

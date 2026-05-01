@@ -1,4 +1,6 @@
 using MentiiWebsite.Data;
+using MentiiWebsite.Models;
+using MentiiWebsite.Models.Config;
 using MentiiWebsite.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options => {
 });
 
 // Add Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     // Password policy
     options.Password.RequireDigit = true;
@@ -29,6 +31,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     // User settings
     options.User.RequireUniqueEmail = true;
 })
+.AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
@@ -73,6 +76,8 @@ var app = builder.Build();
 //    await RoleSeeder.SeedAsync(scope.ServiceProvider);
 //}
 
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -82,13 +87,25 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();   // ← must come before UseAuthorization
 app.UseAuthorization();
 
+var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using (var scope = scopeFactory.CreateScope())
+{
+    await IdentityConfig.CreateAdminUserAsync(scope.ServiceProvider);
+}
+
 app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
 
 app.MapControllerRoute(
     name: "default",

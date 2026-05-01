@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MentiiWebsite.Data
 {
-    public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<IdentityUser>(options)
+    public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
         public DbSet<UserModel> MentiiUsersTbl { get; set; }
 

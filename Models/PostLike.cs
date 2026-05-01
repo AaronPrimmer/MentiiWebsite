@@ -23,7 +23,7 @@ namespace MentiiWebsite.Models
         [Column("user_uuid")]
         public string UserUuid { get; set; } = string.Empty;
 
-        public IdentityUser? User { get; set; }
+        public ApplicationUser? User { get; set; }
 
         [Column("like_date")]
         public DateTime LikeDate { get; set; } = DateTime.UtcNow;

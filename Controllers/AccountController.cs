@@ -4,18 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MentiiWebsite.Controllers
-{    public class AccountController : Controller
+{    public class AccountController(AppDbContext db, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : Controller
     {
-        private readonly AppDbContext _db;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public AccountController(AppDbContext db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
-        {
-            _db = db;
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private readonly AppDbContext _db = db;
+        private readonly UserManager<ApplicationUser> _userManager = userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
 
         // GET: /Account/Register
         [HttpGet]
@@ -38,11 +31,11 @@ namespace MentiiWebsite.Controllers
                 return View(model);
             }
 
-            var user = new IdentityUser { UserName = model.Username, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                var newUser = await _db.MentiiUsersTbl.AddAsync(new UserModel
+                await _db.MentiiUsersTbl.AddAsync(new UserModel
                     {
                         UserUuid = Guid.Parse(user.Id),
                         UserFirstname = "",
