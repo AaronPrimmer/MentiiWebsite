@@ -30,5 +30,59 @@ namespace MentiiWebsite.Areas.Admin.Controllers
             };
             return View(userViewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ApplicationUser user = await userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            IdentityResult result = await userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {   //if failed
+                string errorMessage = "";
+                foreach (IdentityError error in result.Errors)
+                {
+                    errorMessage += error.Description + " | ";
+                }
+                TempData["message"] = errorMessage;
+            }
+            return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToRole(string userId, string roleName)
+        {
+            if (userId == null || roleName == null)
+            {
+                return RedirectToAction("Index");
+            }
+            IdentityRole role = await roleManager.FindByNameAsync(roleName);
+
+            if (role == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ApplicationUser user = await userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                await userManager.AddToRoleAsync(user, roleName);
+            }
+
+            return RedirectToAction("Index");
+
+        }
     }
 }

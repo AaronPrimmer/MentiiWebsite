@@ -1,6 +1,6 @@
 ﻿@model UserViewModel
 @{
-    ViewData["Title"] = "User not found";
+    ViewData["Title"] = "Admin Panel";
 }
 
 <h3 class="mb-3">Admin Panel</h3>
@@ -44,8 +44,10 @@
                         
                     </td>
                     <td>
-                        <a class="btn btn_mentii" asp-controller="User" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
-                        <a class="btn btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                        <form method="post" asp-controller="User" asp-action="Delete" asp-route-id="@user.Id">
+                            <button class="btn btn-danger" type="submit" >Delete</button>
+                        </form>
+                        
                     </td>
                     <td>
                         @if(Model.Roles != null)
@@ -54,13 +56,19 @@
                             {
                                 if(user.RoleNames != null && role.Name != null && !user.RoleNames.Contains(role.Name))
                                 {
-                                        <a class="btn btn_mentii" asp-controller="User" asp-action="AddRole" asp-route-userId="@user.Id" asp-route-roleName="@role.Name">Add @role.Name</a>
+                                    <form method="post" asp-area="Admin" asp-controller="User" asp-action="AddToRole" asp-route-userId="@user.Id" asp-route-roleName="@role.Name">
+                                        <button class="btn btn_mentii" type="submit">Add @role.Name</button>
+                                    </form>
+                                        
                                 }
                                 else
                                 {
                                     @if(user.UserName != "admin")
                                     {
-                                            <a class="btn btn-danger" asp-controller="User" asp-action="RemoveRole" asp-route-userId="@user.Id" asp-route-roleName="@role?.Name">Remove @role?.Name</a>
+                                        <form method="post" asp-controller="User" asp-action="RemoveRole" asp-route-userId="@user.Id" asp-route-roleName="@role?.Name">
+                                            <button class="btn btn-danger" type="submit">Remove @role?.Name</button>
+                                        </form>
+                                            
                                     }
                                 
                                 }

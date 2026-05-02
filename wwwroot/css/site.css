@@ -99,6 +99,7 @@ body {
 .btn_mentii {
     color: #ffffff;
     background-color: #8ec4ca;
+    margin-bottom: 5px;
 }
 
 .btn_mentii:hover {
