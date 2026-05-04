@@ -126,18 +126,18 @@ body {
     color: #324b4e;
 }
 
-.profile-button {
+.icon-button {
     border: none;
     background-color: transparent;
     display: inline-block;
     padding: 5px 10px;
 }
 
-.profile-button:hover .icon-regular, .profile-button .icon-solid{
+.icon-button:hover .icon-regular, .icon-button .icon-solid {
     display: none;
 }
 
-.profile-button:hover .icon-solid {
+.icon-button:hover .icon-solid {
     display: inline-block;
 }
 

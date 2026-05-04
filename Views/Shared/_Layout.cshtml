@@ -13,7 +13,7 @@
 <body>
     <header class="header-main">
         <div>
-            <a asp-controller="Home" asp-action="Index">
+            <a asp-controller="Home" asp-action="Index" asp-area="Default">
                 <img class="header-logo"
                      src="~/images/mentii-logo300x80.png"
                      alt="Mentii Logo" />
@@ -22,24 +22,34 @@
         <div>
             <nav class="header-nav">
                 <div class="nav-links">
-                    @if(User?.Identity?.IsAuthenticated ?? false)
+                    @if (User?.Identity?.IsAuthenticated ?? false)
                     {
                         <span class="user-greeting">Hello, @User.Identity.Name!</span>
-                        <form id="profileForm" method="get" asp-controller="User" asp-action="Profile">
+                        <form id="profileForm" method="get" asp-area="Default" asp-controller="User" asp-action="Profile">
                             <input id="usernameField" type="hidden" name="username" value="@User.Identity.Name" />
-                            <button class="profile-button" type="submit" title="@User.Identity.Name's Profile">
-                                <i class="icon-regular fa-regular fa-user"></i>
-                                <i class="icon-solid fa-solid fa-user"></i>
+                            <button class="icon-button" type="submit" title="@User.Identity.Name's Profile">
+                                <i class="icon-regular fa-regular fa-lg fa-user"></i>
+                                <i class="icon-solid fa-solid fa-lg fa-user"></i>
                             </button>
                         </form>
-                        <form method="post" asp-controller="Account" asp-action="Logout">
+                        <form method="post" asp-area="Default" asp-controller="Account" asp-action="Logout">
                             @Html.AntiForgeryToken()
                             <button class="btn btn_mentii" type="submit">Logout</button>
                         </form>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <form>
+                                <button class="icon-button" type="submit" asp-area="Admin" asp-controller="User" asp-action="Index" title="Admin Panel">
+                                    <i class="icon-regular fa-regular fa-xl fa-id-badge"></i>
+                                    <i class="icon-solid fa-solid fa-xl fa-id-badge"></i>
+                                </button>
+                            </form>
+                                
+                        }
                     }
                     else
                     {
-                        <a class="btn btn_mentii" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="btn btn_mentii" asp-area="Default" asp-controller="Account" asp-action="Login">Login</a>
                     }
                 </div>
             </nav>
@@ -53,7 +63,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2026 - Mentii - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2026 - Mentii - <a asp-area="Default" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
