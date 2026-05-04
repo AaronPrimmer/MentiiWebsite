@@ -65,7 +65,7 @@
                                 {
                                     @if(user.UserName != "admin")
                                     {
-                                        <form method="post" asp-controller="User" asp-action="RemoveRole" asp-route-userId="@user.Id" asp-route-roleName="@role?.Name">
+                                        <form method="post" asp-area="Admin" asp-controller="User" asp-action="RemoveFromRole" asp-route-userId="@user.Id" asp-route-roleName="@role?.Name">
                                             <button class="btn btn-danger" type="submit">Remove @role?.Name</button>
                                         </form>
                                             
@@ -80,3 +80,53 @@
         }
     </tbody>
 </table>
+
+<h3>Manage Roles</h3>
+
+<form method="post" asp-action="CreateRole">
+    <div class="row mb-3">
+        <div class="col-2"></div>
+        <label for="roleName">Role Name</label>
+        <div class="col-5">
+            <input type="text" class="form-control" id="roleName" name="roleName" placeholder="Role Name">
+            <button type="submit" class="btn btn_mentii">Create Role</button>
+        </div>
+    </div>
+</form>
+
+@if(Model.Roles != null)
+{
+    @if (!Model.Roles.Any(role => role.Name?.ToLower() == "admin"))
+    {
+        <form method="post" asp-action="CreateAdminRole">
+            <button type="submit" class="btn btn_mentii">Create Admin Role</button>
+        </form>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>Role Name</th>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model.Roles)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>
+                            @if(role.Name?.ToLower() != "admin")
+                            {
+                                <form method="post" asp-action="DeleteRole" asp-route-roleId="@role.Id">
+                                    <button class="btn btn-danger" type="submit">Delete Role</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

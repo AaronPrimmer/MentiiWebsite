@@ -92,14 +92,18 @@ body {
 
 /*Body*/
 
-.container {
-    padding: 20px;
+.body-container {
+    padding: 20px 40px;
+}
+
+.btn {
+    margin: 5px 0;
+
 }
 
 .btn_mentii {
     color: #ffffff;
     background-color: #8ec4ca;
-    margin-bottom: 5px;
 }
 
 .btn_mentii:hover {

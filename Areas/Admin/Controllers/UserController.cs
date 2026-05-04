@@ -82,7 +82,49 @@ namespace MentiiWebsite.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Index");
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromRole(string userId, string roleName)
+        {
+            ApplicationUser user = await userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                await userManager.RemoveFromRoleAsync(user, roleName);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRole(string roleName)
+        {
+            if (!string.IsNullOrEmpty(roleName))
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdminRole()
+        {
+            await roleManager.CreateAsync(new IdentityRole("Admin"));
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string roleId)
+        {
+            Console.WriteLine("Deleting role: " + roleId);
+            IdentityRole role = await roleManager.FindByIdAsync(roleId);
+            if (role != null) 
+            {
+                await roleManager.DeleteAsync(role);
+                Console.WriteLine("Deleted role: " + role.Name);
+            }
+            return RedirectToAction("Index");
         }
     }
 }
